@@ -1,83 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banco Pix</title>
+  <meta charset="UTF-8">
+  <title>Operações Bancárias</title>
 </head>
-
 <body>
-    <h1>Banco da Etec - Transferencia Pix.</h1>
-    <script>
-        let cpf = [];
-        let nome = [];
-        let saldo = [];
-        let n = 0;
 
-        cpf[0] = 123;
-        nome[0] = 'Matheus';
-        saldo[0] = 502;
+<div id="output"></div>
 
-        let inicio = Number(prompt("Escolha a operação: \n 1 - Cadastrar conta \n 2 - Fazer o Pix \n 3 - Sair"));
-        while (inicio == 1 || inicio == 2) {
+<script>
+  const contas = [
+    { cpf: 123, nome: 'Kaka', saldo: 22.00 },
+    { cpf: 456, nome: 'Lolo', saldo: 80.00 }
+  ];
 
+  function iniciarOperacoes() {
+    fazerPix(10.00, 123, 456);
+  }
 
-            switch (inicio) {
-                case 1:
-                    let cpf1 = Number(prompt("Digite o cpf"));
-                    let nome1 = prompt("Digite o nome");
-                    let saldo1 = Number(prompt("Digite o saldo"));
+  function fazerPix(valor, cpfOrigem, cpfDestino) {
+    const contaOrigem = contas.find(conta => conta.cpf === cpfOrigem);
+    const contaDestino = contas.find(conta => conta.cpf === cpfDestino);
 
-                    cadastrarConta(cpf1, nome1, saldo1);
+    if (contaOrigem && contaDestino) {
+      if (contaOrigem.saldo >= valor) {
+        contaOrigem.saldo -= valor;
+        contaDestino.saldo += valor;
 
-                    break;
-                case 2:
+        const output = document.getElementById('output');
+        output.innerHTML = `
+          <h2>Pix de R$ ${valor.toFixed(2)}</h2>
+          
+          <h3>Origem</h3>
+          <p>Nome: ${contaOrigem.nome}</p>
+          <p>CPF: ${contaOrigem.cpf}</p>
+          <p>Antes: ${contaOrigem.saldo.toFixed(2)}</p>
+          <p>Depois: ${(contaOrigem.saldo - valor).toFixed(2)}</p>
+          
+          <h3>Destino</h3>
+          <p>Nome: ${contaDestino.nome}</p>
+          <p>CPF: ${contaDestino.cpf}</p>
+          <p>Antes: ${contaDestino.saldo.toFixed(2)}</p>
+          <p>Depois: ${(contaDestino.saldo + valor).toFixed(2)}</p>
+        `;
+      } else {
+        alert("Você não tem saldo suficiente.");
+      }
+    } else {
+      alert("Conta de origem ou destino não encontrada.");
+    }
+  }
 
-                    let cpfA = Number(prompt("Digite o cpf de origem"));
-                    let valor = Number(prompt("Digite o valor"));
-                    let cpfB = Number(prompt("Digite o cpf de destino"));
-                    fazerPix(cpfA, valor, cpfB);
+  iniciarOperacoes();
+</script>
 
-                    break;
-                case 3:
-                    alert("3");
-                    break;
-                default:
-                    break;
-            }
-            inicio = Number(prompt("Escolha a operação: \n 1 - Cadastrar conta \n 2 - Fazer o Pix \n 3 - Sair"));
-        }
-        function cadastrarConta(cpf1, nome1, saldo1) {
-            n++;
-            cpf[n] = cpf1;
-            nome[n] = nome1;
-            saldo[n] = saldo1;
-
-            alert("Cpf:" + cpf[n] + "Cliente: " + nome[n] + "Saldo: " + saldo[n]);
-        }
-
-        function fazerPix(cpfA, valor, cpfB) {
-            //localizar o cpfA    
-
-            for (let tiago = 0; tiago < cpf.length; tiago++) {
-                if (cpfA === cpf[index]) {
-                   // alert(cpfA + cpf[index]);
-                    if (saldo[index] >= valor) {
-                        saldo[index] = saldo[index] - valor;
-                        alert("Pix realizado");
-                    } else {
-                        alert("Vc não tem dinheiro")
-                    }
-                }
-            }
-
-            //ver se o cpfa tem dinheiro
-
-        }
-
-
-    </script>
 </body>
-
 </html>
